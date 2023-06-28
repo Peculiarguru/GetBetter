@@ -1,0 +1,8 @@
+* {
+  box-sizing: border-box;
+}
+
+.displayImg {
+  width: 40px;
+  height: 10px;
+}
