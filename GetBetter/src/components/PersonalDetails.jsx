@@ -13,14 +13,16 @@ import { IconLock } from "@tabler/icons-react";
 const PersonalDetails = ({ onRegister }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegisterUser = () => {
-    onRegister({ firstName, lastName, phone, password });
+    onRegister({ firstName, lastName, email, phone, password });
 
     setFirstName("");
     setLastName("");
+    setEmail("");
     setPhone("");
     setPassword("");
   };
@@ -43,6 +45,13 @@ const PersonalDetails = ({ onRegister }) => {
           withAsterisk
         />
       </Flex>
+
+      <TextInput
+        label="EMAIL"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        withAsterisk
+      />
       <TextInput
         label="PHONE"
         value={phone}

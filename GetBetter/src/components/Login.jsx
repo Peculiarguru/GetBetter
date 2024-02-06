@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -14,9 +13,7 @@ import {
   PasswordInput,
   Title,
 } from "@mantine/core";
-
 import SocialButton from "./SocialButton";
-
 import {
   IconBrandFacebook,
   IconBrandGoogle,
@@ -24,8 +21,38 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import ROUTES from "./routes";
+import { notifications } from "@mantine/notifications";
+// import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  // const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    const storedData = localStorage.getItem("userDetails");
+    if (storedData) {
+      const userList = JSON.parse(storedData);
+      const matchedUser = userList.find(
+        (user) => user.email === email && user.password === password
+      );
+
+      if (matchedUser) {
+        console.log("match", matchedUser);
+        setEmail("");
+        setPassword("");
+        localStorage.setItem("currentData", JSON.stringify(matchedUser));
+        window.location.href = ROUTES.dashboard;
+      } else {
+        notifications.show({
+          title: "Error",
+          message: "Invalid email or password. Please try again!",
+          color: "red",
+        });
+      }
+    }
+  };
+
   return (
     <Box>
       <Flex justify={"flex-end"} direction={{ base: "column", sm: "row" }}>
@@ -79,10 +106,17 @@ const Login = () => {
                 Login with Facebook
               </SocialButton>
               <Divider my="md" label="OR" labelPosition="center" />
-              <TextInput label="EMAIL" withAsterisk />
+              <TextInput
+                label="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                withAsterisk
+              />
               <PasswordInput
                 label="Your password"
                 placeholder="Your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 withAsterisk
                 icon={<IconLock size="1rem" />}
               />
@@ -92,6 +126,7 @@ const Login = () => {
                   backgroundColor: "#566cff",
                   borderRadius: "20px",
                 }}
+                onClick={handleLogin}
               >
                 Login
               </Button>

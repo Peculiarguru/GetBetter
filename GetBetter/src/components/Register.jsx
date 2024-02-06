@@ -13,7 +13,7 @@ import {
 import SocialButton from "./SocialButton";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import PersonalDetails from "./PersonalDetails";
-import { Link, json, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ROUTES from "./routes";
 import { notifications } from "@mantine/notifications";
 
@@ -23,6 +23,7 @@ const Register = () => {
     if (
       !userDetails.firstName ||
       !userDetails.lastName ||
+      !userDetails.email ||
       !userDetails.password
     ) {
       notifications.show({

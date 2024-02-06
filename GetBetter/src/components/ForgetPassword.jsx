@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -26,8 +26,40 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import ROUTES from "./routes";
+import { notifications } from "@mantine/notifications";
 
 const ForgetPassword = () => {
+  const [email, setEmail] = useState("");
+
+  const handleResetPassword = () => {
+    const fetchedStoredData = localStorage.getItem("userDetails");
+    console.log(fetchedStoredData);
+    if (fetchedStoredData) {
+      const userList = JSON.parse(fetchedStoredData);
+      console.log("yes find", userList);
+
+      const matchedUser = userList.find((user) => {
+        console.log(user.email, "email");
+        return user.email === email;
+      });
+      console.log(matchedUser, "matched");
+      if (matchedUser) {
+        notifications.show({
+          title: "Success",
+          message: "Email sent with reset password instructions",
+          color: "green",
+        });
+      } else {
+        notifications.show({
+          title: "Failed",
+          message: "No user with that email found.",
+          color: "red",
+        });
+      }
+    }
+    setEmail("");
+  };
+
   return (
     <Box>
       <Flex justify={"flex-end"} direction={{ base: "column", sm: "row" }}>
@@ -54,7 +86,11 @@ const ForgetPassword = () => {
               We'll email you instructions to reset your password.
             </Text>
             <Stack spacing={20} w={"100%"}>
-              <TextInput label="EMAIL" />
+              <TextInput
+                label="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               <Flex justify="center">
                 <Button
                   component={Link}
@@ -63,8 +99,9 @@ const ForgetPassword = () => {
                     borderRadius: "20px",
                     width: "50%",
                   }}
+                  onClick={handleResetPassword}
                 >
-                  Register
+                  Submit
                 </Button>
               </Flex>
 
